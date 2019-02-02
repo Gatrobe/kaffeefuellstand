@@ -1,0 +1,6 @@
+
+- Kanne ist da: Tassenanzahl (Gewicht kleiner < X)
+- Kanne ist nicht da: 503 Service temporary unavailable
+
+/remaining_cups -> tassenzahl or "Coffeepot not found." (503)
+
