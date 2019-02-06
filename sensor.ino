@@ -22,8 +22,10 @@
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
 
-const char* ssid = "carpe.noctem";
-const char* password = "gatrobianer";
+#define WIFI_NAME "carpe.noctem"
+#define WIFI_PASS "gatrobianer"
+//const char* ssid = "carpe.noctem";
+//const char* password = "gatrobianer";
 
 ESP8266WebServer server(80);
 String page = "";
@@ -32,11 +34,12 @@ void setup() {
   //Serial.begin(115200);
   
   page = "<h1>Kaffee</h1><p><a href=\"kaffee\"><button>Fuellstand abfragen</button></a>&nbsp;</p>";
-  WiFi.begin(ssid, password);
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
+  connect_to_wifi();
+ // WiFi.begin(ssid, password);
+ // while (WiFi.status() != WL_CONNECTED) {
+  //  delay(500);
    // Serial.print(".");
-  }
+ // }
  // Serial.println("");
   //Serial.print("Connected to ");
   //Serial.println(ssid);
@@ -66,6 +69,9 @@ void setup() {
 void loop()
 {
   server.handleClient();
+
+  if (WiFi.status() != WL_CONNECTED)
+    connect_to_wifi();
 }
 
 int get_adc()
@@ -232,4 +238,14 @@ void get_cups()
 void get_raw()
 {
   server.send(200, "text/plain", (((String)get_adc_raw()) + "\n"));
+}
+
+void connect_to_wifi()
+{
+  WiFi.disconnect();
+  WiFi.begin(WIFI_NAME, WIFI_PASS);
+  while (WiFi.status() != WL_CONNECTED)
+  {
+    delay(500);
+  }
 }
