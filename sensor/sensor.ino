@@ -24,8 +24,6 @@
 
 #define WIFI_NAME ""
 #define WIFI_PASS ""
-//const char* ssid = "carpe.noctem";
-//const char* password = "gatrobianer";
 
 ESP8266WebServer server(80);
 String page = "";
