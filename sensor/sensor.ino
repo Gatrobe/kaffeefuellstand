@@ -22,8 +22,8 @@
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
 
-#define WIFI_NAME "carpe.noctem"
-#define WIFI_PASS "gatrobianer"
+#define WIFI_NAME ""
+#define WIFI_PASS ""
 //const char* ssid = "carpe.noctem";
 //const char* password = "gatrobianer";
 
