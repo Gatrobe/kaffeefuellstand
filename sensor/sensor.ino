@@ -17,13 +17,11 @@
 #define KANNE_65 424
 #define KANNE_WEG 200
 
+#include "wifi_password.h"
 
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
-
-#define WIFI_NAME ""
-#define WIFI_PASS ""
 
 ESP8266WebServer server(80);
 String page = "";
@@ -130,7 +128,7 @@ int get_adc_raw()
   //Serial.print("Mean of the last 10 mean Values: ");
   //Serial.println(adc_val2_mean);
 
-    return adc_val2_mean;
+  return adc_val2_mean;
 }
 
 void get_kaffe_simple()
