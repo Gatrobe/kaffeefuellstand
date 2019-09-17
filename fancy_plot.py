@@ -8,7 +8,7 @@ from matplotlib.dates import DateFormatter
 import numpy as np
 import requests
 from datetime import datetime, timedelta
-from adjustText import adjust_text
+from email.utils import mktime_tz, parsedate_tz
 
 import os
 
@@ -46,7 +46,7 @@ def get_coffee_purchases():
         for i in range(p['amount']):
             yield {
                 'name': get_consumer(p['user_id']),
-                'date': datetime.strptime(p['timestamp'], '%a, %d %b %Y %X %Z')
+                'date': datetime.fromtimestamp(mktime_tz(parsedate_tz(p['timestamp'])))
             }
 
 to_timestamp = lambda d: d.timestamp()
