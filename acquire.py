@@ -12,21 +12,20 @@ os.chdir(dname)
 
 BASE_URL = "http://kaffeekanne.gatrobe.de"
 
-conn = sqlite3.connect('coffee.db', detect_types=sqlite3.PARSE_DECLTYPES) 
+conn = sqlite3.connect('coffee.db', detect_types=sqlite3.PARSE_DECLTYPES)
 c = conn.cursor()
 
 # status: "unreachable", "no coffeepot", "ok"
 STATUS = {
-        "ok": 0,
-        "no coffeepot": 1,
-        "unreachable": 2,
-	"timeout": 3
+    "ok": 0,
+    "no coffeepot": 1,
+    "unreachable": 2,
+    "timeout": 3
 }
 
 # Create table
 c.execute('''CREATE TABLE IF NOT EXISTS coffeepot
              (datetime timestamp, status integer, remaining_cups real, raw_value integer)''')
-
 
 time = datetime.now()
 
@@ -56,7 +55,6 @@ except requests.exceptions.Timeout:
 
 except requests.exceptions.RequestException:
     status = STATUS["unreachable"]
-
 
 c.execute("INSERT INTO coffeepot VALUES (?, ?, ?, ?)",
           (time, status, remaining_cups, raw))

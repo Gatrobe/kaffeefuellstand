@@ -6,6 +6,8 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
 from datetime import datetime, timedelta
+from dateutil import tz
+from matplotlib.dates import DateFormatter
 
 import os
 
@@ -45,17 +47,18 @@ def plot_it(png_name, titlestr, start_datetime = None):
     ax.grid()
     ax.set_yticks(range(0,9))
     ax.legend(('Cups',), loc=2)
+    ax.xaxis.set_major_formatter(DateFormatter("%H:%M", tz=tz.gettz('Europe/Berlin')))
     
     
     ax2 = ax.twinx()
     ax2.plot(t, r, 'r')
     ax2.set(ylim=(0, 1024), ylabel="Raw ADC Value")
     ax2.legend(('Raw',), loc=1)
+    ax2.xaxis.set_major_formatter(DateFormatter("%H:%M", tz=tz.gettz('Europe/Berlin')))
     
     fig.autofmt_xdate()
     
     fig.savefig(png_name)
-    #plt.show()
 
 
 plot_it('plot.png', '')

@@ -2,6 +2,7 @@
 
 import sqlite3
 import matplotlib
+
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from matplotlib.dates import DateFormatter
@@ -25,19 +26,22 @@ c = conn.cursor()
 
 # status: "unreachable", "no coffeepot", "ok"
 STATUS = {
-        "ok": 0,
-        "no coffeepot": 1,
-        "unreachable": 2
+    "ok": 0,
+    "no coffeepot": 1,
+    "unreachable": 2
 }
 
 consumers = None
+
 
 def get_consumer(consumer_id):
     global consumers
     if consumers is None:
         consumers = requests.get(API_URL + '/users').json()['users']
 
-    return next(map(lambda x: x['firstname'] + ' ' + x['lastname'], filter(lambda x: x['id'] == consumer_id, consumers)), None)
+    return next(
+        map(lambda x: x['firstname'] + ' ' + x['lastname'], filter(lambda x: x['id'] == consumer_id, consumers)), None)
+
 
 def get_coffee_purchases():
     purchases = requests.get(API_URL + '/purchases?limit=50').json()['purchases']
@@ -50,17 +54,19 @@ def get_coffee_purchases():
                 'date': datetime.fromtimestamp(mktime_tz(parsedate_tz(p['timestamp'])))
             }
 
+
 to_timestamp = lambda d: d.timestamp()
 
-def plot_it(png_name, titlestr, start_datetime = None):
+
+def plot_it(png_name, titlestr, start_datetime=None):
     c.execute("SELECT * from coffeepot;")
-    
+
     t = []
     x = []
     r = []
     for t_, s, remaining_cups, raw in c.fetchall():
         if start_datetime is not None and t_ < start_datetime:
-             continue
+            continue
 
         if x is None:
             continue
@@ -68,10 +74,9 @@ def plot_it(png_name, titlestr, start_datetime = None):
         t += [t_]
         x += [remaining_cups]
         r += [raw]
-    
+
     # Data for plotting
-    #fig, (ax, ax2) = plt.subplots(2, 1, figsize=(5,10))
-    fig, ax = plt.subplots(figsize=(5,7))
+    fig, ax = plt.subplots(figsize=(5, 7))
 
     # UGLY HACK: this fails due to strange reasons for the first run... 
     try:
@@ -81,18 +86,12 @@ def plot_it(png_name, titlestr, start_datetime = None):
     ax.xaxis_date()
 
     ax.plot(t, x)
-    
+
     ax.set(xlabel='time', ylabel='Cups',
-           title='Remaining Cups in Coffee Pot' + titlestr, ylim=(-0.5,8.5))
+           title='Remaining Cups in Coffee Pot' + titlestr, ylim=(-0.5, 8.5))
     ax.grid()
-    ax.set_yticks(range(0,9))
+    ax.set_yticks(range(0, 9))
     ax.legend(('Cups',), loc=2)
-    
-    #ax2 = ax.twinx()
-    #ax2.plot(t, r, 'r')
-    #ax2.set(ylim=(0, 1024), ylabel="Raw ADC Value")
-    #ax2.legend(('Raw',), loc=1)
-    #ax2.grid()
 
     texts = []
     y = [v or 0.0 for v in x]
@@ -109,25 +108,22 @@ def plot_it(png_name, titlestr, start_datetime = None):
         if t_min is not None and new > t_min:
             new = t_min
 
-        t_min = new - timedelta(hours = 1)
+        t_min = new - timedelta(hours=1)
 
         xy = (p['date'], np.interp(timestamp_now, timestamps, y))
-        xy_text = (new, - 6) #np.interp(timestamp_now, timestamps, y)+0.5)
+        xy_text = (new, - 6)
         i += 1
 
-        texts += [ ax.annotate(p['name'], xy, xy_text, arrowprops=dict(arrowstyle='->', alpha=0.5, color="#00ff00"), rotation=90) ]
-    
+        texts += [ax.annotate(p['name'], xy, xy_text, arrowprops=dict(arrowstyle='->', alpha=0.5, color="#00ff00"),
+                              rotation=90)]
+
     fig.autofmt_xdate()
     fig.subplots_adjust(bottom=0.4)
     ax.xaxis.set_major_formatter(DateFormatter("%H:%M", tz=tz.gettz('Europe/Berlin')))
 
-    #adjust_text(texts)
-    
     fig.savefig(png_name)
-    #fig.tight_layout()
-    #plt.show()
+
     return texts
 
 
-texts = plot_it('plot_fancy.png', ' (last 24h)', datetime.now() - timedelta(hours = 24))
-
+texts = plot_it('plot_fancy.png', ' (last 24h)', datetime.now() - timedelta(hours=24))
