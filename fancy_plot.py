@@ -74,10 +74,10 @@ def plot_it(png_name, titlestr, start_datetime = None):
 
     # UGLY HACK: this fails due to strange reasons for the first run... 
     try:
-        ax.xaxis_date()
+        ax.xaxis_date(tz='Europe/Berlin')
     except ValueError:
         pass
-    ax.xaxis_date()
+    ax.xaxis_date(tz='Europe/Berlin')
 
     ax.plot(t, x)
     
