@@ -1,3 +1,5 @@
 plot*.png
 coffee.db
 sensor/wifi_password.h
+**.idea**
+**venv**

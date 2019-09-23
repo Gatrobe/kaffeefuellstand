@@ -10,7 +10,7 @@ abspath = os.path.abspath(__file__)
 dname = os.path.dirname(abspath)
 os.chdir(dname)
 
-BASE_URL = "http://172.24.175.125"
+BASE_URL = "http://kaffeekanne.gatrobe.de"
 
 conn = sqlite3.connect('coffee.db', detect_types=sqlite3.PARSE_DECLTYPES) 
 c = conn.cursor()
