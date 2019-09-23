@@ -119,6 +119,7 @@ def plot_it(png_name, titlestr, start_datetime = None):
     fig.autofmt_xdate()
     fig.subplots_adjust(bottom=0.4)
     ax.xaxis.set_major_formatter(DateFormatter("%H:%M"))
+    ax.xaxis_date(tz='Europe/Berlin')
 
     #adjust_text(texts)
     
