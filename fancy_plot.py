@@ -9,6 +9,7 @@ import numpy as np
 import requests
 from datetime import datetime, timedelta
 from email.utils import mktime_tz, parsedate_tz
+from dateutil import tz
 
 import os
 
@@ -118,7 +119,7 @@ def plot_it(png_name, titlestr, start_datetime = None):
     
     fig.autofmt_xdate()
     fig.subplots_adjust(bottom=0.4)
-    ax.xaxis.set_major_formatter(DateFormatter("%H:%M", tz='Europe/Berlin'))
+    ax.xaxis.set_major_formatter(DateFormatter("%H:%M", tz=tz.gettz('Europe/Berlin')))
 
     #adjust_text(texts)
     
