@@ -74,10 +74,10 @@ def plot_it(png_name, titlestr, start_datetime = None):
 
     # UGLY HACK: this fails due to strange reasons for the first run... 
     try:
-        ax.xaxis_date(tz='Europe/Berlin')
+        ax.xaxis_date()
     except ValueError:
         pass
-    ax.xaxis_date(tz='Europe/Berlin')
+    ax.xaxis_date()
 
     ax.plot(t, x)
     
@@ -118,8 +118,7 @@ def plot_it(png_name, titlestr, start_datetime = None):
     
     fig.autofmt_xdate()
     fig.subplots_adjust(bottom=0.4)
-    # ax.xaxis.set_major_formatter(DateFormatter("%H:%M"))
-    ax.xaxis_date(tz='Europe/Berlin')
+    ax.xaxis.set_major_formatter(DateFormatter("%H:%M", tz='Europe/Berlin'))
 
     #adjust_text(texts)
     
