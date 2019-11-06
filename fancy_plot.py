@@ -37,14 +37,14 @@ consumers = None
 def get_consumer(consumer_id):
     global consumers
     if consumers is None:
-        consumers = requests.get(API_URL + '/users').json()['users']
+        consumers = requests.get(API_URL + '/users').json()
 
     return next(
         map(lambda x: x['firstname'] + ' ' + x['lastname'], filter(lambda x: x['id'] == consumer_id, consumers)), None)
 
 
 def get_coffee_purchases():
-    purchases = requests.get(API_URL + '/purchases?limit=50').json()['purchases']
+    purchases = requests.get(API_URL + '/purchases?limit=50').json()
     purchases = filter(lambda x: x['product_id'] == COFFEE_PRODUCT_ID, purchases)
 
     for p in purchases:
